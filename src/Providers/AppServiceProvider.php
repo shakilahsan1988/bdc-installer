@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (!file_exists(storage_path('installed'))) {
-            return redirect('install');
+            app('router')->pushMiddlewareToGroup('web', \Bdc\Installer\Http\Middleware\canInstall::class);
         }
     }
 

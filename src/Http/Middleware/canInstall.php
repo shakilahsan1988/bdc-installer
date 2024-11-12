@@ -17,11 +17,11 @@ class canInstall
     public function handle(Request $request, Closure $next)
     {
         $installedLogFile = storage_path('installed');
-
-        if (file_exists($installedLogFile)) {
-            return redirect('/');
+        if (!file_exists($installedLogFile)) {
+            if (!in_array($request->path(), ['install','install/configuration/validation','install/process','install/database','install/process-store'])) {
+                return redirect('/install');
+            }
         }
-
         return $next($request);
     }
 }
