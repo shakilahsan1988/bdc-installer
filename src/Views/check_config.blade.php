@@ -17,10 +17,10 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><strong>^8.0.0</strong></td>
+                    <td><strong>^8.2.0</strong></td>
                     <td><strong>{{ phpversion() }}</strong></td>
                     <td class="w-105"><span
-                            class="status {{ phpversion() < 8.0 ? 'error' : '' }}">{{ phpversion() < 8.0 ? 'Error' : 'Ok' }}</span>
+                            class="status {{ phpversion() < 8.2 ? 'error' : '' }}">{{ phpversion() < 8.2 ? 'Error' : 'Ok' }}</span>
                     </td>
                 </tr>
                 </tbody>
