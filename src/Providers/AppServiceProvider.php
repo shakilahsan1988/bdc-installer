@@ -32,7 +32,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        if (!file_exists(storage_path('installed'))) {
+            return redirect('install');
+        }
     }
 
     protected function publishFiles()
