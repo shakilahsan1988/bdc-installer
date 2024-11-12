@@ -1,5 +1,5 @@
 {
-    "name": "bdc/installer",
+    "name": "bdcoder/installer",
     "description": "This is a laravel installer. It help to run a project easily.",
     "type": "library",
     "license": "MIT",
