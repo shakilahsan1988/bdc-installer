@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
+
 class InstallController extends Controller
 {
     private $databaseManager;
@@ -154,6 +155,8 @@ class InstallController extends Controller
             'db_host' => 'required',
             'db_user' => 'required',
             'db_name' => 'required',
+            'db_password' => 'nullable',
+            'db_port' => 'nullable|integer',
         ]);
 
         if (!$this->checkDatabaseConnection($request)) {
@@ -169,7 +172,7 @@ class InstallController extends Controller
 
         $this->logger->log('Step-2', 'Redirecting to database insert');
 
-        return redirect()->route('install.database');
+        return redirect()->route('BdcInstaller::database');
     }
 
     public function is_valid_domain_name($url)
@@ -211,14 +214,16 @@ class InstallController extends Controller
 
     public function database()
     {
-        dd(23332);
         set_time_limit(0);
         $this->logger->log('STEP-2', 'Start from database method');
         $this->logger->log('Migration & seed', 'Start');
-        $response = $this->databaseManager->migrateAndSeed();
+        //$response = $this->databaseManager->migrateAndSeed();
+
+        $response = DB::unprepared(file_get_contents(database_path('db.sql')));
+
         $this->logger->log('Migration & seed', 'END');
         $this->logger->log('Migration & seed response ', $response);
-        if ($response['status'] == 'success') {
+        if ($response == true) {
             try {
 //                $this->logger->log('LQS file', 'Local sql get content start');
 //                $lqs = file_get_contents(config('app.sql_path'));
@@ -233,7 +238,7 @@ class InstallController extends Controller
 //                $this->logger->log('SQL import', 'END');
 
                 $this->logger->log('Installed file', 'Write Start');
-                $installedLogFile = storage_path('bis');
+                $installedLogFile = storage_path('installed');
 
                 $data = json_encode([
                     'd' => base64_encode($this->get_domain_name(request()->fullUrl())),
